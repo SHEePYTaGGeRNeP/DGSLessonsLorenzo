@@ -1,21 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Unity.Entities;
+using Unity.Burst;
+using Unity.Jobs;
+using Unity.Transforms;
+using Unity.Collections;
+using Unity.Mathematics;
 
-public class RotationSystem : ComponentSystem
+public class RotationSystem : JobComponentSystem
 {
-    protected override void OnUpdate()
+    // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
+    [BurstCompile]
+    struct RotationSpeedJob : IJobForEach<Rotation, RotationSpeed>
     {
-        // Entities.ForEach processes each set of ComponentData on the main thread. This is not the recommended
-        // method for best performance. However, we start with it here to demonstrate the clearer separation
-        // between ComponentSystem Update (logic) and ComponentData (data).
-        // There is no update logic on the individual ComponentData.
-        Entities.ForEach((ref RotationComponent rotationSpeed, ref Transform rotation) =>
+        public float DeltaTime;
+
+        // The [ReadOnly] attribute tells the job scheduler that this job will not write to rotSpeedIJobForEach
+        public void Execute(ref Rotation rotation, [ReadOnly] ref RotationSpeed rotationComponent)
         {
-            var deltaTime = Time.deltaTime;
-            rotation.Value = math.mul(math.normalize(rotation.Value),
-                quaternion.AxisAngle(math.up(), rotationSpeed.RadiansPerSecond * deltaTime));
-        });
+            // Rotate something about its up vector at the speed given by RotationComponent.
+            rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(math.up(), rotationComponent.radiansPerSecond * DeltaTime));
+        }
+    }
+
+    // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
+    [BurstCompile]
+    struct RotationSpeedJobParallel : IJobParallelFor
+    {
+        public float DeltaTime;
+        public Rotation Rotation;
+        public float RadiansPerSecond;
+
+        public void Execute(int index)
+        {
+            Rotation.Value = math.mul(math.normalize(Rotation.Value), quaternion.AxisAngle(math.up(), RadiansPerSecond * DeltaTime));
+        }
+    }
+
+    // OnUpdate runs on the main thread.
+    protected override JobHandle OnUpdate(JobHandle inputDependencies)
+    {
+        var job = new RotationSpeedJob
+        {
+            DeltaTime = Time.deltaTime
+        };
+
+        return job.Schedule(this, inputDependencies);
     }
 }
