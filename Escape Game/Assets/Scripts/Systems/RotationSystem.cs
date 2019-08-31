@@ -22,19 +22,6 @@ public class RotationSystem : JobComponentSystem
         }
     }
 
-    // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
-    [BurstCompile]
-    struct RotationSpeedJobParallel : IJobParallelFor
-    {
-        public float DeltaTime;
-        public Rotation Rotation;
-        public float RadiansPerSecond;
-
-        public void Execute(int index)
-        {
-            Rotation.Value = math.mul(math.normalize(Rotation.Value), quaternion.AxisAngle(math.up(), RadiansPerSecond * DeltaTime));
-        }
-    }
 
     // OnUpdate runs on the main thread.
     protected override JobHandle OnUpdate(JobHandle inputDependencies)
@@ -43,7 +30,31 @@ public class RotationSystem : JobComponentSystem
         {
             DeltaTime = Time.deltaTime
         };
-
         return job.Schedule(this, inputDependencies);
     }
+
+    //// OnUpdate runs on the main thread.
+    //protected JobHandle OnUpdate2(JobHandle inputDependencies)
+    //{
+    //    var job = new RotationSpeedJobParallel
+    //    {
+    //        DeltaTime = Time.deltaTime,
+
+    //    };
+    //    return job.Schedule(, inputDependencies);
+    //}
+
+    //// Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
+    //[BurstCompile]
+    //struct RotationSpeedJobParallel : IJobParallelFor
+    //{
+    //    public float DeltaTime;
+    //    public Rotation Rotation;
+    //    public float RadiansPerSecond;
+
+    //    public void Execute(int index)
+    //    {
+    //        Rotation.Value = math.mul(math.normalize(Rotation.Value), quaternion.AxisAngle(math.up(), RadiansPerSecond * DeltaTime));
+    //    }
+    //}
 }

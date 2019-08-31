@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+Escape Game/Assets/StreamingAssets/PerformanceTestRunInfo.json
+
+Escape Game/Assets/StreamingAssets/PerformanceTestRunInfo.json.meta
