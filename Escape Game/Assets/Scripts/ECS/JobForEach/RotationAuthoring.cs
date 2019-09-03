@@ -15,7 +15,7 @@ namespace Assets.Scripts.Components
         // To a good runtime representation (Represented in radians)
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var data = new RotationSpeed { radiansPerSecond = math.radians(DegreesPerSecond) };
+            var data = new RotationSpeed_IJobEach { radiansPerSecond = math.radians(DegreesPerSecond) };
             dstManager.AddComponentData(entity, data);
         }
     }
