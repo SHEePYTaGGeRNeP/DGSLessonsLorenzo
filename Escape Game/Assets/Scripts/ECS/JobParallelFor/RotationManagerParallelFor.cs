@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Unity.Mathematics;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Jobs;
+using Unity.Collections;
+using Unity.Burst;
 
 namespace Assets.Scripts.ECS.JobParellelFor
 {
-    class RotationManager : MonoBehaviour
+    [BurstCompile]
+    public struct RotationSpeed_ParallelFor : IJobParallelForTransform
+    {
+        public float rotationSpeed;
+        public float deltaTime;
+
+        public void Execute(int index, TransformAccess transform)
+        {
+            Quaternion newRot = math.mul(math.normalize(transform.localRotation), quaternion.AxisAngle(math.up(), rotationSpeed * deltaTime));
+            transform.rotation = newRot;
+        }
+    }
+
+    class RotationManagerParallelFor : MonoBehaviour
     {
         private TransformAccessArray _transforms;
         private RotationSpeed_ParallelFor _job;
@@ -17,7 +28,6 @@ namespace Assets.Scripts.ECS.JobParellelFor
 
         [SerializeField]
         private GameObject _prefab;
-
         [SerializeField]
         private float _speed;
 
@@ -32,19 +42,19 @@ namespace Assets.Scripts.ECS.JobParellelFor
             this._transforms = new TransformAccessArray(0, -1);
             this.Spawn(3);
         }
-        
+
         private void Spawn(int amount)
         {
             this._jobHandle.Complete();
-
             this._transforms.capacity = this._transforms.length + amount;
             for (int i = 0; i < amount; i++)
             {
-                Vector3 pos = new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(-2f, 2f));
+                Vector3 pos = new Vector3(R(), R(), R());
                 var obj = Instantiate(this._prefab, pos, Quaternion.identity);
                 this._transforms.Add(obj.transform);
             }
         }
+        private float R() => UnityEngine.Random.Range(-2f, 2f);
 
         private void Update()
         {

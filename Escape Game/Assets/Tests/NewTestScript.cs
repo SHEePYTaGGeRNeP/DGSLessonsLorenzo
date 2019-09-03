@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -21,9 +20,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator NewTestScriptWithEnumeratorPasses()
         {
+            var health = new GameObject().AddComponent<BoxCollider>();
             // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
+            // yield to skip a frame
             yield return null;
+            Assert.IsNotNull(health);
         }
     }
 }
