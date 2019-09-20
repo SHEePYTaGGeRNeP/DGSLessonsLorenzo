@@ -26,9 +26,9 @@ namespace Tests
         [Test]
         public void Healing_MoreThanZero_IncreasesHP()
         {
-            HealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL * 2);
+            HealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
             hs.Heal(_DEFAULT_DMG_OR_HEAL);
-            Assert.AreEqual(_DEFAULT_DMG_OR_HEAL, hs.CurrentHealth);
+            Assert.AreEqual(_DEFAULT_DMG_OR_HEAL * 2, hs.CurrentHealth);
         }
 
         [Test]
@@ -94,6 +94,39 @@ namespace Tests
             Assert.Throws<ArgumentException>(() => hs.SetMaxHealth(0));
             hs.SetMaxHealth(1);
             Assert.AreEqual(1, hs.MaxHealth);
+        }
+
+        [Test]
+        public void Damage_Event_Works()
+        {
+            HealthSystem hs = CreateHealthSystem();
+            bool event1Raised, event2Raised;
+            event1Raised = event2Raised = false;
+            hs.HealthChanged += (sender, args) =>
+            {
+                event1Raised = true;
+            };
+            hs.HealthChangedViaDelegate += (damage, hp) =>
+            {
+                event2Raised = true;
+            };
+            hs.Damage(_DEFAULT_DMG_OR_HEAL);
+            Assert.IsTrue(event1Raised);
+            Assert.IsTrue(event2Raised);
+        }
+
+        [Test]
+        public void Unity_eventWorks()
+        {
+            var hs = CreateHealthSystem();
+            bool event1Raised = false;
+            hs.HealthChangedUnity = new HealthSystem.UnityHealthChangedEvent();
+            hs.HealthChangedUnity.AddListener((HealthChangedEventArgs args) =>
+            {
+                event1Raised = true;
+            });
+            hs.Damage(_DEFAULT_DMG_OR_HEAL);
+            Assert.IsTrue(event1Raised);
         }
     }
 }
