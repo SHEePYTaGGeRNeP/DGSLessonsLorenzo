@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game;
 using NUnit.Framework;
@@ -44,6 +45,55 @@ namespace Tests
             HealthSystem hs = CreateHealthSystem();
             hs.Heal(_DEFAULT_MAX_HP);
             Assert.AreEqual(_DEFAULT_MAX_HP, hs.CurrentHealth);
+        }
+
+        [Test]
+        public void Healing_Negative_ThrowsException()
+        {
+            HealthSystem hs = CreateHealthSystem();
+            Assert.Throws<NegativeInputException>(() => hs.Heal(-1));
+        }
+
+        [Test]
+        public void Damaging_Negative_ThrowsException()
+        {
+            HealthSystem hs = CreateHealthSystem();
+            Assert.Throws<NegativeInputException>(() => hs.Damage(-1));
+        }
+        
+        [Test]
+        public void Damaging_MoreThanZero_DecreasesHP()
+        {
+            HealthSystem hs = CreateHealthSystem();
+            hs.Damage(_DEFAULT_DMG_OR_HEAL);
+            Assert.AreEqual(_DEFAULT_MAX_HP - _DEFAULT_DMG_OR_HEAL, hs.CurrentHealth);
+        }
+
+        [Test]
+        public void CurrentHP_CannotBeBelow_Zero()
+        {
+            HealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
+            hs.Damage(_DEFAULT_MAX_HP);
+            Assert.AreEqual(0, hs.CurrentHealth);
+        }
+
+
+        [Test]
+        public void Damaging_Zero_HPStaysSame()
+        {
+            HealthSystem hs = CreateHealthSystem();
+            hs.Damage(0);
+            Assert.AreEqual(_DEFAULT_MAX_HP, hs.CurrentHealth);
+        }
+
+        [Test]
+        public void SettingMaxHp_CannotBeBelow1()
+        {
+            HealthSystem hs = CreateHealthSystem();
+            Assert.Throws<ArgumentException>(() => hs.SetMaxHealth(-1));
+            Assert.Throws<ArgumentException>(() => hs.SetMaxHealth(0));
+            hs.SetMaxHealth(1);
+            Assert.AreEqual(1, hs.MaxHealth);
         }
     }
 }

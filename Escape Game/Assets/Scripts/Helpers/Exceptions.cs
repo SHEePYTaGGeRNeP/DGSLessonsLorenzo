@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Helpers
+public class NegativeInputException : Exception
 {
-    class Exceptions
-    {
-    }
+    public NegativeInputException(string message) : base(message) { }
+    public NegativeInputException(string message, Exception innerException) : base(message, innerException) { }
 }
