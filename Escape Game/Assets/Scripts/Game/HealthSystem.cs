@@ -72,7 +72,7 @@ namespace Assets.Scripts.Game
         public void SetMaxHealth(int newValue)
         {
             if (newValue < 1)
-                throw new System.ArgumentException($"Max health must be at least 1 ({newValue})");
+                throw new ArgumentException($"Max health must be at least 1 ({newValue})");
             this.MaxHealth = newValue;
         }
 

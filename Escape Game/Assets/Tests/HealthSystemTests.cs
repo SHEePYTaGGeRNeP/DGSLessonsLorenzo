@@ -40,6 +40,14 @@ namespace Tests
         }
 
         [Test]
+        public void Healing_OverMax_TurnsToMax()
+        {
+            HealthSystem hs = CreateHealthSystem(100, 80);
+            hs.Heal(_DEFAULT_MAX_HP);
+            Assert.AreEqual(_DEFAULT_MAX_HP, hs.CurrentHealth);
+        }
+
+        [Test]
         public void Healing_DoesNotExceedMax()
         {
             HealthSystem hs = CreateHealthSystem();
