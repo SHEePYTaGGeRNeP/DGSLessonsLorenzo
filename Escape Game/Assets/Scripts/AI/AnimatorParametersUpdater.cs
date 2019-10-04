@@ -13,14 +13,14 @@ namespace Assets.Scripts.AI
         public PlayerTouchSensor3D Sensor => _sensor;
 
         [SerializeField]
-        private float _attackRange = 1f;
+        private float _attackRange = 2f;
 
         public Vector3 StartPosition { get; private set; }
 
         private const float _STARTPOS_TOLERANCE = 3f;
 
         /// <summary>We don't want to attack whenever we enter AttackBehavior, because it might be getting in and out of range.</summary>
-        public float LastAttackTime { get; set; }
+        public float LastAttackTime { get; set; } = float.MinValue;
 
         private void Awake()
         {
