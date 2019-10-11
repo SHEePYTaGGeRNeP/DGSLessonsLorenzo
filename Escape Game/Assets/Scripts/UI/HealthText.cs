@@ -9,8 +9,16 @@ namespace Assets.Scripts.UI
     {
         private Text _text;
 
+        [SerializeField]
+        private Gradient _gradient;
+
         private void Awake() { this._text = this.GetComponent<Text>(); }
 
-        public void OnHealthChanged(HealthChangedEventArgs eventArgs) { this._text.text = $"{eventArgs.CurrentHealth}/{eventArgs.MaxHealth}"; }
+        public void OnHealthChanged(HealthChangedEventArgs e)
+        {
+            this._text.text = $"{e.CurrentHealth}/{e.MaxHealth}";
+            float fillAmount = (float)e.CurrentHealth / e.MaxHealth;
+            this._text.color = _gradient.Evaluate(fillAmount);
+        }
     }
 }
