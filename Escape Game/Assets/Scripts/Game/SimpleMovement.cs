@@ -6,6 +6,7 @@ namespace Assets.Scripts.Game
     {
         [SerializeField]
         private float _speed = 8f;
+        public float Speed { get => this._speed; set => this._speed = value; }
 
         [SerializeField]
         private float _rotationSpeed = 300f;
@@ -15,5 +16,6 @@ namespace Assets.Scripts.Game
             this.transform.localEulerAngles = this.transform.localEulerAngles.AddY(horizontal * this._rotationSpeed * Time.deltaTime);
             this.transform.position += this.transform.forward * vertical * this._speed * Time.deltaTime;
         }
+
     }
 }
