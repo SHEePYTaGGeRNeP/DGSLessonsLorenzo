@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5268568acb58248bc404db6db3fdb6, type: 3}
+  m_Name: Armor of Life
+  m_EditorClassIdentifier: 
+  _id: 0
+  _name: Armor of Life
+  _slot: 2
+  _isStackable: 0
+  _behaviors:
+  - {fileID: 11400000, guid: a9b90fb81a542c748b11773d2265c1f2, type: 2}

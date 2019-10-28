@@ -17,6 +17,7 @@ namespace Assets.Scripts.Game
                 _maxHealth = value;
                 if (CurrentHealth > _maxHealth)
                     CurrentHealth = _maxHealth;
+                this.HealthChangedUnity?.Invoke(new HealthChangedEventArgs(_currentHealth, MaxHealth));
             }
         }
 

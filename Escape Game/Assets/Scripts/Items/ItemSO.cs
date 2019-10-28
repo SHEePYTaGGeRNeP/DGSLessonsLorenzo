@@ -17,6 +17,7 @@ namespace Assets.Scripts.Items
         private string _name;
         public string Name { get => this._name; set { this._name = value; } }
 
+
         [SerializeField]
         private GearSlot _slot;
         public GearSlot Slot { get { return this._slot; } set { this._slot = value; } }
@@ -33,14 +34,14 @@ namespace Assets.Scripts.Items
             this._behaviors = behaviors;
         }
 
-        public void OnEquip(GameObject owner)
+        public void Equip(GameObject owner)
         {
             if (this._behaviors.IsNullOrEmpty())
                 return;
             foreach (ItemBehavior behavior in _behaviors)
                 behavior.OnEquip(owner);
         }
-        public void OnUnequip(GameObject owner)
+        public void UnEquip(GameObject owner)
         {
             if (this._behaviors.IsNullOrEmpty())
                 return;
@@ -48,5 +49,6 @@ namespace Assets.Scripts.Items
                 behavior.OnUnequip(owner);
         }
 
+        public override string ToString()=> $"({this.Id}) {this.Name} - Behaviors: {this._behaviors.Length}";
     }
 }
