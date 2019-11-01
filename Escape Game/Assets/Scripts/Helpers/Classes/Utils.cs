@@ -302,4 +302,41 @@ public static class Utils
         colorString = "<color=#" + colorString + ">" + s + "</color>";
         newString = colorString;
     }
+
+    public static void DrawColliderGizmo(Collider col, Color color)
+    {
+        Color prevColor = Gizmos.color;
+        Gizmos.color = color;
+        if (col is BoxCollider box)
+            Gizmos.DrawWireCube(col.transform.position + box.center, box.size);
+        else if (col is SphereCollider sphere)
+            Gizmos.DrawWireSphere(col.transform.position + sphere.center, sphere.radius);
+        else if (col is CapsuleCollider capsule)
+        {
+            // draw some spheres to fake capsule
+            for (float position = -capsule.height / 2f + capsule.radius;
+                position < (capsule.height / 2f); position += (int)capsule.radius)
+            {
+                switch (capsule.direction)
+                {
+                    case 0: //x
+                        Gizmos.DrawWireSphere(
+                            col.transform.position + capsule.center + (col.transform.right * position),
+                            capsule.radius);
+                        break;
+                    case 1: //y
+                        Gizmos.DrawWireSphere(
+                            col.transform.position + capsule.center + (col.transform.up * position),
+                            capsule.radius);
+                        break;
+                    default: //z
+                        Gizmos.DrawWireSphere(
+                            col.transform.position + capsule.center + (col.transform.forward * position),
+                            capsule.radius);
+                        break;
+                }
+            }
+        }
+        Gizmos.color = prevColor;
+    }
 }

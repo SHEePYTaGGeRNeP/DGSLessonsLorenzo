@@ -5,12 +5,15 @@ namespace Assets.Scripts.AI.Sensors
     [RequireComponent(typeof(Collider))]
     public abstract class TouchSensor3D : TouchSensor
     {
-        private Collider _thisCollider;
+        [Header("TouchSensor3D variable")]
+        [SerializeField]
+        private Collider _collider;
 
         protected override void Awake()
         {
             base.Awake();
-            this._thisCollider = this.GetComponent<Collider>();
+            if (this._collider == null)
+                this._collider = this.GetComponent<Collider>();
         }
 
         protected override void DebugDrawGizmos()
@@ -19,11 +22,11 @@ namespace Assets.Scripts.AI.Sensors
                 Gizmos.color = this.IsTouching ? Color.red : Color.green;
             else
                 Gizmos.color = Color.grey;
-            if (this._thisCollider is BoxCollider box)
+            if (this._collider is BoxCollider box)
                 Gizmos.DrawWireCube(this.transform.position + box.center, box.size);
-            else if (this._thisCollider is SphereCollider sphere)
+            else if (this._collider is SphereCollider sphere)
                 Gizmos.DrawWireSphere(this.transform.position + sphere.center, sphere.radius);
-            else if (this._thisCollider is CapsuleCollider capsule)
+            else if (this._collider is CapsuleCollider capsule)
             {
                 // draw some spheres to fake capsule
                 for (float position = -capsule.height / 2f + capsule.radius;
