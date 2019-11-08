@@ -6,11 +6,8 @@ namespace Assets.Scripts
 {
     class GameEnder : MonoBehaviour
     {
-
-        public void OnPlayerHealthChanged(HealthChangedEventArgs e)
+        public void PlayerHealthReachedZero()
         {
-            if (e.CurrentHealth != 0)
-                return;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

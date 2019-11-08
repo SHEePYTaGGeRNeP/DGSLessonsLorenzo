@@ -32,6 +32,8 @@ namespace Assets.Scripts.Game
                 this.HealthChangedViaDelegate?.Invoke(_currentHealth, MaxHealth);
                 this.HealthChanged?.Invoke(this, new HealthChangedEventArgs(_currentHealth, MaxHealth));
                 this.HealthChangedUnity?.Invoke(new HealthChangedEventArgs(_currentHealth, MaxHealth));
+                if (_currentHealth == 0)
+                    this.HealthReachedZero?.Invoke();
             }
         }
 
@@ -42,6 +44,8 @@ namespace Assets.Scripts.Game
         [Serializable]
         public class UnityHealthChangedEvent : UnityEvent<HealthChangedEventArgs> { }
         public UnityHealthChangedEvent HealthChangedUnity;
+
+        public UnityEvent HealthReachedZero;
 
         public static HealthSystem CreateHealthSystem(GameObject go, int maxHealth) => CreateHealthSystem(go, maxHealth, maxHealth);
         public static HealthSystem CreateHealthSystem(GameObject go, int maxHealth, int currentHealth)
