@@ -71,7 +71,7 @@ namespace Assets.Tests
         }
         private static int Multiply(int i)
         {
-            Debug.Log($"Multiplying... {i} * 2= {i*2}, imagine this takes some time...");
+            Debug.Log($"Multiplying... {i} * 2= {i * 2}, imagine this takes some time...");
             return i * 2;
         }
 
@@ -85,6 +85,20 @@ namespace Assets.Tests
                 Debug.Log(i);
                 continue;
             }
+        }
+
+        [Test]
+        public void DoIKnowLinq()
+        {
+            // 1
+            CollectionAssert.AreEqual(new[] { 4, 5, 6, 7, 8 }, numbers.Where(x => x > 3));
+            // 2
+            CollectionAssert.AreEqual(new[] { 6, 7, 8 }, numbers.Where(x => x * 2 > 10));
+            CollectionAssert.AreEqual(new[] { 6, 7, 8 }, numbers.Select(x => x * 2).Where(x => x > 10));
+            // 3
+            Assert.AreEqual(8, numbers.Max());
+            // 6
+            Assert.Throws<InvalidOperationException>(() => numbers.First(x => x > 10));
         }
     }
 
