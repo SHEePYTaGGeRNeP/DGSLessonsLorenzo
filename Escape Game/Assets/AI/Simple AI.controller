@@ -91,8 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf7b375fd9144024f9657c96b2f15d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackCooldown: 3
-  _damage: 5
+  _attackCooldown: 0.1
+  _damage: 2
   _remaining: 0
 --- !u!1101 &-163309969022365639
 AnimatorStateTransition:
@@ -133,19 +133,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: InRangeForChase
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: InOriginalSpot
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: New Layer
