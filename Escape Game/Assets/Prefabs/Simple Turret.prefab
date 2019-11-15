@@ -73,7 +73,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2243133019395787396
 MonoBehaviour:
@@ -470,7 +470,8 @@ MonoBehaviour:
   _cooldown: 1
   _bulletToSpawn: {fileID: 6648863671429170209, guid: 94a1608a3cff73544a6de985b7532b8d,
     type: 3}
+  _angleToStartFiring: 35
   _touchSensor: {fileID: 2243133019395787396}
-  _rotationSpeed: 17.1
-  _bulletSpawnLocation: {fileID: 0}
+  _rotationSpeed: 50
+  _bulletSpawnLocation: {fileID: 533736379635300652}
   _side: {x: 0, y: 0, z: 0}

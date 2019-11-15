@@ -41,6 +41,10 @@ namespace Assets.Scripts.Game
         {
             this.StartCoroutine(DestroyNextFrame());
         }
+        private void OnCollisionEnter(Collision other)
+        {
+            this.StartCoroutine(DestroyNextFrame());
+        }
 
         private IEnumerator DestroyNextFrame()
         {

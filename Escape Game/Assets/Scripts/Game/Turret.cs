@@ -14,11 +14,14 @@ namespace Assets.Scripts.Game
         private GameObject _bulletToSpawn;
 
         [SerializeField]
+        private float _angleToStartFiring = 35f;
+
+        [SerializeField]
         private TouchSensor3D _touchSensor;
 
         [SerializeField]
-        [Range(0.1f, 100f)]
-        private float _rotationSpeed;
+        [Range(0.1f, 1000f)]
+        private float _rotationSpeed = 100;
 
         [SerializeField]
         private Transform _bulletSpawnLocation;
@@ -31,7 +34,7 @@ namespace Assets.Scripts.Game
 
         private void Update()
         {
-            if (!_touchSensor.IsTouching)
+            if (!this._touchSensor.IsTouching)
                 return;
             this.RotateTowardsTarget();
             this.TryShoot();
@@ -39,25 +42,36 @@ namespace Assets.Scripts.Game
 
         private void RotateTowardsTarget()
         {
-            _side = Utils.ObjectSide(this.transform, _touchSensor.TouchingGameObjects.First().transform.position);
-            Debug.DrawRay(this.transform.position, this._side * 3, Color.cyan, 0.2f);
-            this.transform.Rotate(0, this._side.x * this._rotationSpeed, 0);
+            this._side = Utils.ObjectSide(this.transform, _touchSensor.TouchingGameObjects.First().transform.position);
+            float velocity = this._side.x < 0 ? -1f : 1f;
+            this.transform.Rotate(0, velocity * this._rotationSpeed * Time.deltaTime, 0);
         }
 
         private void TryShoot()
         {
-            if (this._side.x < 0.5f && Time.time - _timeOfLastShot > this._cooldown)
+            if (IsTargetInFiringAngle() && Time.time - _timeOfLastShot > this._cooldown)
             {
                 Instantiate(_bulletToSpawn, _bulletSpawnLocation.position, this.transform.rotation);
-                _timeOfLastShot = Time.time;
+                this._timeOfLastShot = Time.time;
             }
         }
 
-        private void OnDrawGizmosSelected()
+        private bool IsTargetInFiringAngle()
         {
+            Vector3 targetDir = this._touchSensor.TouchingGameObjects.First().transform.position - this.transform.position;
+            float angleToTarget = Vector3.Angle(targetDir, this.transform.forward);
+            return Mathf.Abs(angleToTarget) <= this._angleToStartFiring;// >= -this._angleToStartFiring && angleToTarget <= this._angleToStartFiring);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!this._touchSensor.IsTouching)
+                return;
             Color prev = Gizmos.color;
-            Gizmos.color = Color.white;
-            Gizmos.DrawLine(this.transform.position.AddY(0.5f), this.transform.position.AddY(0.5f) + this.transform.forward * 5);
+            Gizmos.color = IsTargetInFiringAngle() ? Color.red : Color.green;
+            Gizmos.DrawLine(this.transform.position, this._touchSensor.TouchingGameObjects.First().transform.position);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(this.transform.position.AddY(0.5f), this._side);
             Gizmos.color = prev;
         }
     }
