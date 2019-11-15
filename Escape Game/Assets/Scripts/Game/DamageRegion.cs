@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Game;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Game
 {
     class DamageRegion : MonoBehaviour
     {

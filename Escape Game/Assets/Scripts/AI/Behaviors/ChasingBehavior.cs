@@ -17,6 +17,7 @@ public class ChasingBehavior : StateMachineBehaviour
     {
         this._animatorParametersUpdater = animator.GetComponent<AnimatorParametersUpdater>();
         this.simpleMovement = animator.GetComponent<SimpleMovement>();
+        if (this._animatorParametersUpdater.Sensor.Player != null)
         this._target = this._animatorParametersUpdater.Sensor.Player.transform;
         Debug.Log("Entered Chase");
     }
@@ -24,6 +25,8 @@ public class ChasingBehavior : StateMachineBehaviour
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (this._target == null)
+            return;
         this._remaining = Utils.ObjectSide(animator.transform, this._target.position);
         this.simpleMovement.MoveByInput(_remaining.x, 1);
     }

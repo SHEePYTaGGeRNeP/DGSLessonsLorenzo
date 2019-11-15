@@ -22,6 +22,7 @@ namespace Assets.Scripts.AI.Sensors
         [SerializeField]
         private List<GameObject> _touchingGameObjects;
 
+        public IReadOnlyCollection<GameObject> TouchingGameObjects => this._touchingGameObjects;
 
         protected abstract void OnTouchEnter(GameObject other);
         protected abstract void OnTouchExit(GameObject other);
