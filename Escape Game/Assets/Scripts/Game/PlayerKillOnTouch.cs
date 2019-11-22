@@ -12,7 +12,7 @@ namespace Assets.Scripts.Game
             Player p = other.GetComponent<Player>();
             if (p == null)
                 return;
-            HealthSystem hs = p.GetComponent<HealthSystem>();
+            IHealthSystem hs = p.GetComponent<IHealthSystem>();
             hs.Damage(hs.MaxHealth);
         }
     }

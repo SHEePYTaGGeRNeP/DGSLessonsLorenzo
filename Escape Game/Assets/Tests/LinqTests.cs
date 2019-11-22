@@ -94,11 +94,15 @@ namespace Assets.Tests
             CollectionAssert.AreEqual(new[] { 4, 5, 6, 7, 8 }, numbers.Where(x => x > 3));
             // 2
             CollectionAssert.AreEqual(new[] { 6, 7, 8 }, numbers.Where(x => x * 2 > 10));
-            CollectionAssert.AreEqual(new[] { 6, 7, 8 }, numbers.Select(x => x * 2).Where(x => x > 10));
+            CollectionAssert.AreEqual(new[] { 12, 14, 16 }, numbers.Select(x => x * 2).Where(x => x > 10));
             // 3
             Assert.AreEqual(8, numbers.Max());
             // 6
             Assert.Throws<InvalidOperationException>(() => numbers.First(x => x > 10));
+
+            Assert.True(new int[0].All(x => x > 3));
+            Assert.True(!new int[0].Any(x => x > 3));
+            Assert.False(new int[0].Any(x => x > 3));
         }
     }
 

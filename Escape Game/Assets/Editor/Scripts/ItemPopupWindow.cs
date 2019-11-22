@@ -13,8 +13,8 @@ public class CreateItemWindow : EditorWindow
     private int _behaviorSelectedIndex;
     private GearSlot _gearSlot = GearSlot.Head;
     private string _itemName;
-    private List<ItemBehavior> _selectedItemBehaviors = new List<ItemBehavior>();
-    static Dictionary<string, ItemBehavior> optionsDic = new Dictionary<string, ItemBehavior>();
+    private List<IItemBehavior> _selectedItemBehaviors = new List<IItemBehavior>();
+    static Dictionary<string, IItemBehavior> optionsDic = new Dictionary<string, IItemBehavior>();
 
     [MenuItem("Items/Open Create Item Window")]
     public static void ShowWindow()
@@ -32,7 +32,7 @@ public class CreateItemWindow : EditorWindow
         string[] behaviors = AssetDatabase.FindAssets("", new[] { _ITEM_BEHAVIORS_ASSETS_PATH });
         foreach (string guid in behaviors)
         {
-            ItemBehavior ib = AssetDatabase.LoadAssetAtPath<ItemBehavior>(AssetDatabase.GUIDToAssetPath(guid));
+            IItemBehavior ib = AssetDatabase.LoadAssetAtPath<ItemBehavior>(AssetDatabase.GUIDToAssetPath(guid));
             string assetName = System.IO.Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(guid));
             optionsDic.Add(assetName, ib);
         }
@@ -55,7 +55,7 @@ public class CreateItemWindow : EditorWindow
             this._selectedItemBehaviors.RemoveAll(x => x);
         GUILayout.EndHorizontal();
         GUILayout.Space(20);
-        foreach (ItemBehavior ib in this._selectedItemBehaviors)
+        foreach (IItemBehavior ib in this._selectedItemBehaviors)
         {
             GUILayout.Label(ib.name);
         }
@@ -68,7 +68,7 @@ public class CreateItemWindow : EditorWindow
 
     private void AddBehaviorIfNotExists(string name)
     {
-        ItemBehavior ib = optionsDic[name];
+        IItemBehavior ib = optionsDic[name];
         if (!this._selectedItemBehaviors.Contains(ib))
             this._selectedItemBehaviors.Add(ib);
     }

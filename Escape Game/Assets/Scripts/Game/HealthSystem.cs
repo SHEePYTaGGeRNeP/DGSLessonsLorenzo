@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts.Helpers;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts.Game
 {
-    public class HealthSystem : MonoBehaviour
+    public class HealthSystem : MonoBehaviour, IHealthSystem
     {
         [Header("DEBUG INFO")]
         [SerializeField]
@@ -41,10 +42,7 @@ namespace Assets.Scripts.Game
         public event HealthChangedDel HealthChangedViaDelegate;
         public event EventHandler<HealthChangedEventArgs> HealthChanged;
 
-        [Serializable]
-        public class UnityHealthChangedEvent : UnityEvent<HealthChangedEventArgs> { }
         public UnityHealthChangedEvent HealthChangedUnity;
-
         public UnityEvent HealthReachedZero;
 
         public static HealthSystem CreateHealthSystem(GameObject go, int maxHealth) => CreateHealthSystem(go, maxHealth, maxHealth);

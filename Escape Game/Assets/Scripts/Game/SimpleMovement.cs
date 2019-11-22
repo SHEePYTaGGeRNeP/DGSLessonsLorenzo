@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Game
 {
-    public class SimpleMovement : MonoBehaviour
+    public class SimpleMovement : MonoBehaviour, ISimpleMovement
     {
         [SerializeField]
         private float _speed = 8f;

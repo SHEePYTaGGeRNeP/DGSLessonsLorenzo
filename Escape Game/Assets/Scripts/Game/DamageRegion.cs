@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game
             if (p == null || Time.time - _lastDamageTime < this._cooldown)
                 return;
             _lastDamageTime = Time.time;
-            HealthSystem hs = p.GetComponent<HealthSystem>();
+            IHealthSystem hs = p.GetComponent<IHealthSystem>();
             hs.Damage(this._damage);
         }
     }

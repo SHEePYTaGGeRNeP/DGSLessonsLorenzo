@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game;
+using Assets.Scripts.Helpers;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -19,14 +20,14 @@ namespace Tests
         [Test]
         public void Can_Create()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             Assert.IsNotNull(hs);
         }
 
         [Test]
         public void Healing_MoreThanZero_IncreasesHP()
         {
-            HealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
+            IHealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
             hs.Heal(_DEFAULT_DMG_OR_HEAL);
             Assert.AreEqual(_DEFAULT_DMG_OR_HEAL * 2, hs.CurrentHealth);
         }
@@ -34,7 +35,7 @@ namespace Tests
         [Test]
         public void Healing_Zero_HPStaysSame()
         {
-            HealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
+            IHealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
             hs.Heal(0);
             Assert.AreEqual(_DEFAULT_DMG_OR_HEAL, hs.CurrentHealth);
         }
@@ -42,7 +43,7 @@ namespace Tests
         [Test]
         public void Healing_OverMax_TurnsToMax()
         {
-            HealthSystem hs = CreateHealthSystem(100, 80);
+            IHealthSystem hs = CreateHealthSystem(100, 80);
             hs.Heal(_DEFAULT_MAX_HP);
             Assert.AreEqual(_DEFAULT_MAX_HP, hs.CurrentHealth);
         }
@@ -50,7 +51,7 @@ namespace Tests
         [Test]
         public void Healing_DoesNotExceedMax()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             hs.Heal(_DEFAULT_MAX_HP);
             Assert.AreEqual(_DEFAULT_MAX_HP, hs.CurrentHealth);
         }
@@ -58,21 +59,21 @@ namespace Tests
         [Test]
         public void Healing_Negative_ThrowsException()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             Assert.Throws<NegativeInputException>(() => hs.Heal(-1));
         }
 
         [Test]
         public void Damaging_Negative_ThrowsException()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             Assert.Throws<NegativeInputException>(() => hs.Damage(-1));
         }
         
         [Test]
         public void Damaging_MoreThanZero_DecreasesHP()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             hs.Damage(_DEFAULT_DMG_OR_HEAL);
             Assert.AreEqual(_DEFAULT_MAX_HP - _DEFAULT_DMG_OR_HEAL, hs.CurrentHealth);
         }
@@ -80,7 +81,7 @@ namespace Tests
         [Test]
         public void CurrentHP_CannotBeBelow_Zero()
         {
-            HealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
+            IHealthSystem hs = CreateHealthSystem(_DEFAULT_MAX_HP, _DEFAULT_DMG_OR_HEAL);
             hs.Damage(_DEFAULT_MAX_HP);
             Assert.AreEqual(0, hs.CurrentHealth);
         }
@@ -89,7 +90,7 @@ namespace Tests
         [Test]
         public void Damaging_Zero_HPStaysSame()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             hs.Damage(0);
             Assert.AreEqual(_DEFAULT_MAX_HP, hs.CurrentHealth);
         }
@@ -97,7 +98,7 @@ namespace Tests
         [Test]
         public void SettingMaxHp_CannotBeBelow1()
         {
-            HealthSystem hs = CreateHealthSystem();
+            IHealthSystem hs = CreateHealthSystem();
             Assert.Throws<ArgumentException>(() => hs.SetMaxHealth(-1));
             Assert.Throws<ArgumentException>(() => hs.SetMaxHealth(0));
             hs.SetMaxHealth(1);
@@ -128,7 +129,7 @@ namespace Tests
         {
             var hs = CreateHealthSystem();
             bool event1Raised = false;
-            hs.HealthChangedUnity = new HealthSystem.UnityHealthChangedEvent();
+            hs.HealthChangedUnity = new UnityHealthChangedEvent();
             hs.HealthChangedUnity.AddListener((HealthChangedEventArgs args) =>
             {
                 event1Raised = true;

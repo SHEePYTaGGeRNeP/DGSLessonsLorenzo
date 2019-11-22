@@ -12,13 +12,13 @@ namespace Assets.Scripts.Items.Behaviors
 
         public override void OnEquip(GameObject owner)
         {
-            HealthSystem hs = owner.GetComponentInChildren<HealthSystem>();
+            IHealthSystem hs = owner.GetComponentInChildren<IHealthSystem>();
             hs.SetMaxHealth(hs.MaxHealth + this.HpIncrease);
             hs.Heal(this.HpIncrease);
         }
         public override void OnUnequip(GameObject owner)
         {
-            HealthSystem hs = owner.GetComponentInChildren<HealthSystem>();
+            IHealthSystem hs = owner.GetComponentInChildren<IHealthSystem>();
             hs.SetMaxHealth(hs.MaxHealth - this.HpIncrease);
         }
     }

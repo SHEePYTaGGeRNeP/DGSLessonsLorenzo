@@ -5,7 +5,7 @@ namespace Assets.Scripts.Game
     class PlayerMovementInput : MonoBehaviour
     {
         [SerializeField]
-        private SimpleMovement _simpleMovement;
+        private ISimpleMovement _simpleMovement;
 
         private void Update()
         {

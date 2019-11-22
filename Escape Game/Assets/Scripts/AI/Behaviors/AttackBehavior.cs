@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackBehavior : StateMachineBehaviour
 {
     private AnimatorParametersUpdater _animatorParametersUpdater;
-    private HealthSystem _healthSystem;
+    private IHealthSystem _healthSystem;
 
     [SerializeField]
     private float _attackCooldown = 1f;
@@ -21,7 +21,7 @@ public class AttackBehavior : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         this._animatorParametersUpdater = animator.GetComponent<AnimatorParametersUpdater>();
-        this._healthSystem = this._animatorParametersUpdater.Sensor.Player.GetComponent<HealthSystem>();
+        this._healthSystem = this._animatorParametersUpdater.Sensor.Player.GetComponent<IHealthSystem>();
         this.TryAttack();
         Debug.Log("Enterted Attack");
     }

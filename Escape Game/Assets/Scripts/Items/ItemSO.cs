@@ -28,8 +28,8 @@ namespace Assets.Scripts.Items
 
 
         [SerializeField]
-        private ItemBehavior[] _behaviors;
-        public void SetBehaviors(ItemBehavior[] behaviors)
+        private IItemBehavior[] _behaviors;
+        public void SetBehaviors(IItemBehavior[] behaviors)
         {
             this._behaviors = behaviors;
         }
@@ -38,14 +38,14 @@ namespace Assets.Scripts.Items
         {
             if (this._behaviors.IsNullOrEmpty())
                 return;
-            foreach (ItemBehavior behavior in _behaviors)
+            foreach (IItemBehavior behavior in _behaviors)
                 behavior.OnEquip(owner);
         }
         public void UnEquip(GameObject owner)
         {
             if (this._behaviors.IsNullOrEmpty())
                 return;
-            foreach (ItemBehavior behavior in _behaviors)
+            foreach (IItemBehavior behavior in _behaviors)
                 behavior.OnUnequip(owner);
         }
 
