@@ -52,10 +52,10 @@ public class CreateItemWindow : EditorWindow
         if (GUILayout.Button("Remove behavior"))
             this._selectedItemBehaviors.RemoveAll(x => x == optionsDic[optionsArray[this._behaviorSelectedIndex]]);
         if (GUILayout.Button("Clear behaviors"))
-            this._selectedItemBehaviors.RemoveAll(x => x);
+            this._selectedItemBehaviors.Clear();
         GUILayout.EndHorizontal();
         GUILayout.Space(20);
-        foreach (IItemBehavior ib in this._selectedItemBehaviors)
+        foreach (ItemBehavior ib in this._selectedItemBehaviors)
         {
             GUILayout.Label(ib.name);
         }

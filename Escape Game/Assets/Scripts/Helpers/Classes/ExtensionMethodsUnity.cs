@@ -25,6 +25,8 @@ public static class ExtensionMethodsUnity
         t.localScale = Vector3.one;
     }
 
+    public static bool IsAbout(this float f, float compareTo) => Mathf.Abs(f) - Mathf.Abs(compareTo) < 1e-5f;
+
     public static void SetEmissionRate(this ParticleSystem particleSystem, float emissionRate)
     {
         ParticleSystem.EmissionModule emission = particleSystem.emission;
